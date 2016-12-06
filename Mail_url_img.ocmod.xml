@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Modul Mail_url_img</name>
+    <code>Modul Mail_url_img</code>
+    <version>1.0</version>
+    <author>Artur Legusha</author>
+    <link>http://isyms.ru</link>
+    <file path="catalog/model/checkout/order.php">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA['name'     => $product['name'],]]></search>
+            <add position="after" offset="1"><![CDATA[
+            'product_id'    => $product['product_id'],  
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/default/template/mail/order.tpl">
+        <operation>                                        @TODO не могу никак попасть поиском на эту строку
+            <search trim="true|false" index="0"><![CDATA[echo $product['name']; ?>]]></search>
+            <add position="replace" offset="1"><![CDATA[
+               ?>
+<a href="http://localhost/oc2.1/index.php?route=product/product&product_id=<?=$product['product_id']?>"><?=$product['name']?></a>            ]]></add>
+        </operation>
+    </file>   
+    
+</modification>
+
