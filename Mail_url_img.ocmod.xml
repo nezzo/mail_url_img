@@ -13,14 +13,58 @@
             ]]></add>
         </operation>
     </file>
-    <file path="catalog/view/theme/default/template/mail/order.tpl">
-        <operation>                                        @TODO не могу никак попасть поиском на эту строку
-            <search trim="true|false" index="0"><![CDATA[echo $product['name']; ?>]]></search>
-            <add position="replace" offset="1"><![CDATA[
-               ?>
-<a href="http://localhost/oc2.1/index.php?route=product/product&product_id=<?=$product['product_id']?>"><?=$product['name']?></a>            ]]></add>
+    <file path="catalog/model/checkout/order.php">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA[$data['products'][] = array(]]></search>
+            <add position="before" offset="1"><![CDATA[
+            $order_image = $this->db->query("SELECT `image` FROM " . DB_PREFIX . "product WHERE product_id = '" . (int)$product['product_id'] . "'");  
+            ]]></add>
         </operation>
-    </file>   
+    </file>
+    <file path="catalog/model/checkout/order.php">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA['option'   => $option_data,]]></search>
+            <add position="after" offset="1"><![CDATA[
+            'image'       => $order_image->rows,
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/default/template/mail/order.tpl">
+        <operation>                                        
+            <search trim="true|false" index="0"><![CDATA[echo $product['name']; ?>]]></search>
+            <add position="replace" offset="0"><![CDATA[
+               ?>
+<a href="http://<?=$_SERVER['HTTP_HOST']?>/oc2.1/index.php?route=product/product&product_id=<?=$product['product_id']?>"><?=$product['name']?></a>
+            ]]></add>
+        </operation>
+    </file> 
+    <file path="catalog/view/theme/default/template/mail/order.tpl">
+        <operation>                                        
+            <search trim="true|false" index="4"><![CDATA[<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight:]]></search>
+            <add position="before" offset="0"><![CDATA[
+         <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;"><?php echo "Изображения"; ?></td>
+ ]]></add>
+        </operation>
+    </file> 
+    <file path="catalog/view/theme/default/template/mail/order.tpl">
+        <operation>                                        
+            <search trim="true|false" index="3"><![CDATA[<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><?php]]></search>
+            <add position="before" offset="0"><![CDATA[
+             <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+            <?php foreach ($product['image'] as $image) { ?>
+        <img src="http://<?=$_SERVER['HTTP_HOST']?>/oc2.1/image/<?=$image['image'];?>" width="80" height="100">
+            <?php } ?>    
+        </td>
+                  
+        ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/default/template/mail/order.tpl">
+        <operation>                                        
+            <search trim="true|false" index="0"><![CDATA[colspan="4"]]></search>
+            <add position="replace" offset="0"><![CDATA[ colspan="5" ]]></add>
+        </operation>
+    </file>    
     
 </modification>
 
